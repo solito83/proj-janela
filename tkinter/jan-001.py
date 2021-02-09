@@ -1,14 +1,24 @@
 #Inicio.
 from tkinter import *
+from tkinter import ttk
+import sqlite3
 
 window = Tk()
 
-class application():
+class funcs():
+    def limpa_tela(self):
+        self.codigo_entry.delete(0, END)
+        self.nome_entry.delete(0, END)
+        self.marca_entry.delete(0, END)
+        self.calibragem_entry.delete(0, END)
+
+class application(funcs):
     def __init__(self):
         self.window = window
         self.tela()
         self.frames_da_tela()
         self.botao_es()
+        self.lista_frame2()
         window.mainloop()
     def tela(self):
         self.window.title('Ferramentas')
@@ -26,7 +36,7 @@ class application():
         self.frame_2.place(relx = 0.01, rely = 0.45, relwidth = 0.98, relheight = 0.54)
     def botao_es(self):
 # botão limpar
-        self.bt_limpar = Button(self.frame_1, text = 'Limpar', bd = 3, bg = '#d8a64b', fg = 'white', font = ('helvetica', 9, 'bold'))
+        self.bt_limpar = Button(self.frame_1, text = 'Limpar', bd = 3, bg = '#d8a64b', fg = 'white', font = ('helvetica', 9, 'bold'), command = self.limpa_tela)
         self.bt_limpar.place(relx = 0.1, rely = 0.02, relwidth = 0.15, relheight = 0.12)
 # botão buscar
         self.bt_buscar = Button(self.frame_1, text = 'Buscar', bd = 3, bg = '#d8a64b', fg = 'white', font = ('helvetica', 9, 'bold'))
@@ -93,6 +103,26 @@ class application():
         self.lb_comentario.place(relx = 0.1, rely = 0.90)
 
         self.comentario_entry = Entry(self.frame_1)
-        self.comentario_entry.place(relx = 0.25, rely = 0.90, relwidth = 0.65, relheight = 0.1)
+        self.comentario_entry.place(relx = 0.25, rely = 0.90, relwidth = 0.65, relheight = 0.1)           
+#..., 'col5', 'col6', 'col7', 'col8', 'col9'
+    def lista_frame2(self):
+        self.listaCli = ttk.Treeview(self.frame_2, height = 3, column = ("col1", "col2", "col3", "col4"))
+        self.listaCli.heading("#0", text = "")
+        self.listaCli.heading("#1", text = "Código")
+        self.listaCli.heading("#2", text = "Nome")
+        self.listaCli.heading("#3", text = "Marca")
+        self.listaCli.heading("#4", text = "Calibragem")
+
+        self.listaCli.column("#0", width = 1)
+        self.listaCli.column("#1", width = 50)
+        self.listaCli.column("#2", width = 200)
+        self.listaCli.column("#3", width = 125)
+        self.listaCli.column("#4", width = 125)
+
+        self.listaCli.place(relx = 0.01, rely = 0.1, relwidth = 0.95, relheight = 0.85)
+        
+        self.scroolLista = Scrollbar(self.frame_2, orient = 'vertical')
+        self.listaCli.configure(yscroll = self.scroolLista.set)
+        self.scroolLista.place(relx = 0.96, rely = 0.1, relwidth = 0.04, relheight = 0.85)
 
 application()
