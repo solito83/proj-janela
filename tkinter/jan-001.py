@@ -11,7 +11,24 @@ class funcs():
         self.nome_entry.delete(0, END)
         self.marca_entry.delete(0, END)
         self.calibragem_entry.delete(0, END)
-
+    def conecta_bd(self):
+        self.conn = sqlite3.connect('ferramentas.bd')
+        self.cursor = self.conn.cursor(); print('Conectando ao banco de dados')
+    def desconecta_bd(self):
+        self.conn.close(); print('Desconectando ao banco de dados')
+    def cria_tabela(self):
+        self.conecta_bd()
+        ### criar tabela
+        self.cursor.execute('''
+            CREATE TABLE IF NOT EXISTS ferramentas(
+                cod INTEGER PRIMARY KEY,
+                nome_ferramenta CHAR(40) NOT NULL,
+                marca CHAR(40),
+                calibragem CHAR(20)
+            )
+        ''')
+        self.conn.commit(); print('Banco de dados criado')
+        self.desconecta_bd()
 class application(funcs):
     def __init__(self):
         self.window = window
@@ -19,6 +36,7 @@ class application(funcs):
         self.frames_da_tela()
         self.botao_es()
         self.lista_frame2()
+        self.cria_tabela()
         window.mainloop()
     def tela(self):
         self.window.title('Ferramentas')
